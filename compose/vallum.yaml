@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+    vallum-db:
+        image: ronnypeterson/vallum-db-unsafe
+        container_name: vallum-db
+        environment:
+          - MYSQL_ROOT_PASSWORD=#s3nh@#
+        ports:
+          - 3306:3306
+    vallum-audit-db:
+        image: ronnypeterson/vallum-audit-db-unsafe
+        container_name: vallum-audit-db
+        environment:
+          - MYSQL_ROOT_PASSWORD=#s3nh@#
+    vallum-audit:
+        image: ronnypeterson/vallum-audit-unsafe
+        container_name: vallum-audit
+        depends_on:
+          - vallum-audit-db
+    vallum-privacy:
+        image: ronnypeterson/vallum-privacy-unsafe
+        container_name: vallum-privacy
+    vallum:
+        image: ronnypeterson/vallum-unsafe
+        container_name: vallum
+        ports:
+          - 9000:9000
+        depends_on:
+          - vallum-db
+          - vallum-audit
+          - vallum-privacy
+    client-vallum-web:
+        image: ronnypeterson/client-vallum-web
+        container_name: client-vallum-web
+        ports:
+          - 8080:8080
+        depends_on:
+          - vallum
