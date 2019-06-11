@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+    hadoop-slave1:
+        image: mikaelsouza/atmosphere-hdfs:2.7.4.1
+        container_name: hadoop-slave1
+    hadoop-slave2:
+        image: mikaelsouza/atmosphere-hdfs:2.7.4.1
+        container_name: hadoop-slave2
+    hadoop-slave3:
+        image: mikaelsouza/atmosphere-hdfs:2.7.4.1
+        container_name: hadoop-slave3
+    hadoop-master:
+        image: mikaelsouza/atmosphere-hdfs-master:2.7.4.1
+        container_name: hadoop-master
+        depends_on:
+            - hadoop-slave1
+            - hadoop-slave2
+            - hadoop-slave3
+        ports:
+          - '8020:8020'
+    vallum-db:
+        image: ronnypeterson/vallum-db-test
+        container_name: vallum-db
+        environment:
+          - MYSQL_ROOT_PASSWORD=#s3nh@#
+    vallum:
+        image: ronnypeterson/vallum-file
+        container_name: vallum
+        ports:
+          - 9000:9000
+        depends_on:
+          - vallum-db
+    client:
+        image: mikaelsouza/atmosphere-client-secure
+        container_name: client
+        depends_on:
+          - vallum
+          - hadoop-master
+          - hadoop-slave1
+          - hadoop-slave2
+          - hadoop-slave3
