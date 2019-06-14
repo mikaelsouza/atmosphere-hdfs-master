@@ -5,4 +5,5 @@ ADD hdfs-control-DEMO.jar /hdfs-control-DEMO.jar
 
 RUN chmod +x /etc/bootstrap.sh
 
+
 CMD ["/etc/bootstrap.sh"]
