@@ -25,7 +25,7 @@ services:
         environment:
           - MYSQL_ROOT_PASSWORD=#s3nh@#
     vallum:
-        image: ronnypeterson/vallum-file
+        image: mikaelsouza/vallum
         container_name: vallum
         ports:
           - 9000:9000
